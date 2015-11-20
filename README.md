@@ -4,12 +4,15 @@ blog build with MEAN
 ## To Install
 npm install
 
+bower install
+
 
 # Run
 > npm start
 
 Make sure mongoDB is running
 
+Bower used for frontend package management.
 
 What are MEAN stack components:
 

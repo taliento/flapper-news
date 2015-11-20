@@ -23,3 +23,6 @@ public/min/
 public/index.html
 vendor/*
 public/fonts
+
+# Bower files
+public/libs/
