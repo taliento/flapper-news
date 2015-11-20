@@ -6,7 +6,7 @@ npm install
 
 
 # Run
-> node app.js
+> npm start
 
 Make sure mongoDB is running
 
