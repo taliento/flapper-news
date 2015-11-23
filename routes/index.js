@@ -110,7 +110,7 @@ router.put('/posts/:post/upvote', auth, function(req, res, next) {
 		if (err) { return next(err); }
 
 		res.json(post);
-	});
+	},req.payload);
 });
 
 /*PUT downvote a post*/
@@ -119,7 +119,7 @@ router.put('/posts/:post/downvote', auth, function(req, res, next) {
 		if (err) { return next(err); }
 
 		res.json(post);
-	});
+	}, req.payload);
 });
 
 /*POST post's comment*/
@@ -145,7 +145,7 @@ router.put('/posts/:post/comments/:comment/upvote', auth, function(req, res, nex
 		if (err) { return next(err); }
 
 		res.json(comment);
-	});
+	},req.payload);
 });
 
 /*PUT downvote a comment*/
@@ -154,7 +154,7 @@ router.put('/posts/:post/comments/:comment/downvote', auth, function(req, res, n
 		if (err) { return next(err); }
 
 		res.json(comment);
-	});
+	},req.payload);
 });
 
 
