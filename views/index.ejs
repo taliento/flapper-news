@@ -125,38 +125,43 @@
 </div>
 <script type="text/ng-template" id="/home.html">
 
-<div ng-repeat="post in posts | orderBy:'-upvotes'">
+<div ng-repeat="post in posts | orderBy:'-upvotes'" class="blog-post">
 			<span class="glyphicon glyphicon-thumbs-up"
 				ng-click="incrementUpvotes(post)"></span>
 			<span class="glyphicon glyphicon-thumbs-down"
 				ng-click="decrementUpvotes(post)"></span>
 			{{post.upvotes}}
-			<span style="font-size:20px; margin-left:10px;">
+
+			<h2 class="blog-post-title">
 				<a ng-show="post.link" href="{{post.link}}">
 					{{post.title}}
 				</a>
 				<span ng-hide="post.link">
 					{{post.title}}
 				</span>
-			</span>
+			</h2>
 
-			<span ng-show="post.author">
-				posted by <a>{{post.author}}</a> |
-			</span>			
+			<p class="blog-post-meta">
+				Submitted on {{post.date | date:'MM/dd/yyyy @ h:mma'}}
+				<span ng-show="post.author">
+					by <a>{{post.author}}</a>
+				</span>			
+			</p>
 
 			<span>
-				<a href="#/posts/{{post._id}}">Comments</a>
+			  {{post.comments.length}}	<a href="#/posts/{{post._id}}">Comments</a>
 			</span>
-			{{post.comments.length}}
 
 </div>
 
-<div ng-hide="isLoggedIn()">
-	<h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</h3>
-</div>
+		<div ng-hide="isLoggedIn()">
+			<h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</h3>
+		</div>
+
+		<button ng-show="isLoggedIn()" ng-click="showPost=true">Add post</button> 
 
 		<form ng-submit="addPost()"
-			ng-show="isLoggedIn()"
+			ng-show="showPost"
 			style="margin-top:30px;">
 			<h3>Add a new post</h3>
 
@@ -199,11 +204,15 @@
 			{{comment.body}}
 		</span>
 	</div>
+
 <div ng-hide="isLoggedIn()">
 	<h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can comment.</h3>
 </div>
+
+<button ng-show="isLoggedIn()" ng-click="showComment=true">Add comment</button> 
+
 <form ng-submit="addComment()"
-			ng-show="isLoggedIn()"
+			ng-show="showComment"
 		style="margin-top:30px;">
 		<h3>Add a new comment</h3>
 
