@@ -149,6 +149,13 @@ app.factory('posts', ['$http', 'auth',function($http, auth){
 		});
 	};
 
+	o.addCommentReply = function(id, comment){
+		return $http.post('/comments/' + id + '/replies', comment, {
+			headers: {Authorization: 'Bearer '+auth.getToken()}
+		});
+
+	};	
+
 	o.upvoteComment = function(post, comment) {
 		return $http.put('/posts/' + post._id + '/comments/'+ comment._id + '/upvote', null, {
 			headers: {Authorization: 'Bearer '+auth.getToken()}
@@ -200,6 +207,7 @@ app.controller('MainCtrl', [
 		function($scope, posts, auth){
 			$scope.posts = posts.posts;
 			$scope.isLoggedIn = auth.isLoggedIn;
+			$scope.body='';
 			$scope.addPost = function(){
 				if(!$scope.title || $scope.title === '') { return; }
 				posts.create({
@@ -230,19 +238,31 @@ app.controller('PostsCtrl', [
 		'post',
 		'auth',
 		function($scope, posts, post, auth){
-
 			$scope.post = post;
 			$scope.isLoggedIn = auth.isLoggedIn;
 
-			$scope.addComment = function(){
-				if($scope.body === '') { return; }
-				posts.addComment(post._id, {
-					body: $scope.body,
-					author: 'user',
-				}).success(function(comment) {
-					$scope.post.comments.push(comment);
-				});
-				$scope.body = '';
+			$scope.addComment = function(_parent){
+				if($scope.body === '' &&  this.reply === '') { return; }
+				if(_parent) {
+					posts.addCommentReply(_parent._id, {
+						body: this.reply,
+						author: 'user'
+					}).success(function(comment){
+						if(!_parent.comments){
+							_parent.comments = [];
+						}
+						_parent.comments.push(comment);	
+					});	
+					this.reply = '';
+				}else {
+					posts.addComment(post._id, {
+						body: $scope.body,
+						author: 'user'
+					}).success(function(comment) {
+						$scope.post.comments.push(comment);
+					});
+					$scope.body = '';
+				}	
 			};
 
 			$scope.incrementUpvotes = function(comment){
@@ -253,10 +273,10 @@ app.controller('PostsCtrl', [
 				posts.downvoteComment(post, comment);
 			};	
 
+			$scope.body = '';
 		}
 
 ]);
-
 
 app.controller('NavCtrl', [
 		'$scope',

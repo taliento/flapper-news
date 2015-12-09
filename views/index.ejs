@@ -53,8 +53,8 @@
 
 		</div>
 
-		</div>
 	</div>
+</div>
 </div>
 <script type="text/ng-template" id="/home.html">
 
@@ -87,10 +87,6 @@
 
 </div>
 
-		<div ng-hide="isLoggedIn()">
-			<p>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</p>
-		</div>
-
 		<button ng-show="isLoggedIn() && !showPost" ng-click="showPost=true" class="pager">Add post</button> 
 
 		<form ng-submit="addPost()"
@@ -110,11 +106,15 @@
 			<button type="submit" class="btn btn-primary">Post</button>
 		</form>
 
+		<div ng-hide="isLoggedIn()">
+			<p>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</p>
+		</div>
+
 </script>
 
 <script type="text/ng-template" id="/posts.html">
 <div class="page-header">
-
+			<br>
 			<h2 class="blog-post-title">
 				<a ng-show="post.link" href="{{post.link}}">
 					{{post.title}}
@@ -134,27 +134,9 @@
 
 	</div>
 
-	<div ng-repeat="comment in post.comments | orderBy:'-upvotes'" class="blog-post">
-		<span class="glyphicon glyphicon-thumbs-up"
-			ng-click="incrementUpvotes(comment)"></span>
-		<span class="glyphicon glyphicon-thumbs-down"
-			ng-click="decrementUpvotes(comment)"></span>
-		{{comment.upvotes}} 
-		<p class="blog-post-meta">
-        Submitted on {{comment.date | date:'MM/dd/yyyy @ h:mma'}}
-        <span ng-show="comment.author">
-          by <a>{{comment.author}}</a>
-        </span>     
-      </p>
-
-		<p>
-			{{comment.body}}
-		</p>
-	</div>
-
-<div ng-hide="isLoggedIn()">
-	<p>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can comment.</p>
-</div>
+	<ul>
+		<li ng-repeat="comment in post.comments | orderBy:'-upvotes'" ng-include="'commentsRender'"></li>
+	</ul>
 
 <button ng-show="isLoggedIn() && !showComment" ng-click="showComment=true" class="pager">Add comment</button> 
 
@@ -166,7 +148,45 @@
 		</div>
 		<button type="submit" class="btn btn-primary">Post</button>
 	</form>
+
+<div ng-hide="isLoggedIn()">
+	<p>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can comment.</p>
+</div>
+
 </script>
+
+ <script type="text/ng-template" id="commentsRender">
+<div class="blog-comment">
+		<br>
+		<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(comment)"></span>
+		<span class="glyphicon glyphicon-thumbs-down" ng-click="decrementUpvotes(comment)"></span>
+		{{comment.upvotes}} 
+
+		<p>
+			{{comment.body}}
+		</p>
+
+		<p class="blog-post-meta">
+				Submitted on {{post.date | date:'MM/dd/yyyy @ h:mma'}}
+				<span ng-show="post.author">
+					by <a>{{post.author}}</a>
+				</span>    
+		</p>
+
+		<button  ng-click="showReply=true">reply</button>
+
+		<form ng-submit="addComment(comment)" ng-show="isLoggedIn() && showReply" style="margin-top:30px;">
+			<div class="form-group">
+				<textarea class="form-control" placeHolder="Reply" ng-model="reply">Reply</textarea>
+			</div>
+			<button type="submit" ng-show="isLoggedIn() && showReply" class="btn btn-primary">reply</button>
+		</form>
+
+		 <ul ng-show="comment.comments"  class="children">
+				<li ng-repeat="comment in comment.comments | orderBy:'-upvotes'" ng-include="'commentsRender'"></li>
+		 </ul>
+</div>
+ </script>
 
 <script type="text/ng-template" id="/register.html">
 
@@ -222,18 +242,18 @@
 
 <!-- footer -->
 <footer class="blog-footer">
-	<p>
-	The acronym "MEAN" stands for "MongoDB Express.js AngularJS Node.js" and represents a group of technologies which are known to synergize well together. 
-	</br>
-	Blog template built for
-	<a href="http://getbootstrap.com">Bootstrap</a>
-	by
-	<a href="https://twitter.com/mdo">@mdo</a>
-	.
-	</p>
-	<p>
-	<a href="#">Back to top</a>
-	</p>
+<p>
+The acronym "MEAN" stands for "MongoDB Express.js AngularJS Node.js" and represents a group of technologies which are known to synergize well together. 
+</br>
+Blog template built for
+<a href="http://getbootstrap.com">Bootstrap</a>
+by
+<a href="https://twitter.com/mdo">@mdo</a>
+.
+</p>
+<p>
+<a href="#">Back to top</a>
+</p>
 </footer>
 <!-- fine footer -->
 

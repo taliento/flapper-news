@@ -6,13 +6,15 @@ var Comment = mongoose.model('Comment');
 var passport = require('passport');
 var User = mongoose.model('User');
 var jwt = require('express-jwt');
+var ObjectId = require('mongoose').Types.ObjectId; 
+
 
 /* middleware for authenticating jwt tokens */
 var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 
 /* GET home page. */
 router.get('/', function(req, res) {
-		res.render('index');
+	res.render('index');
 });
 
 router.post('/register', function(req, res, next){
@@ -98,10 +100,34 @@ router.post('/posts', auth, function(req, res, next) {
 
 /*GET a post */
 router.get('/posts/:post', function(req, res) {
-	req.post.populate('comments', function(err, post) {
-		if (err) { return next(err); }
+
+	var post = req.post;
+	var query = Comment.find({post:new ObjectId(post._id)}).sort({path:1});
+
+	//TODO devo capire se esiste un metodo più pulito per ricostruire il json tree, per adesso questa query è la più performante
+	query.exec(function(err,comments){
+		if(err){ return next(err); }
+		
+		var createChildComment = function(postComments, currentNode, level){
+			if(level==1){
+				postComments.push(currentNode);
+			}else{
+				for(i in postComments){
+					if(postComments[i]._id == currentNode.parent){
+						createChildComment(postComments[i].comments, currentNode, level-1);
+						break;
+					}	
+				}
+			}
+		}
+
+		for(var k in comments){
+			var c = comments[k].toJSON();
+			createChildComment(post.comments, c, c.level);
+		}
 
 		res.json(post);
+
 	});
 });
 
@@ -128,16 +154,31 @@ router.post('/posts/:post/comments', auth, function(req, res, next) {
 	var comment = new Comment(req.body);
 	comment.post = req.post;
 	comment.date = new Date();
+	comment.path = null;
 	comment.author = req.payload.username;
 	comment.save(function(err, comment){
 		if(err){ return next(err); }
+		res.json(comment);
+	});
+});
 
-		req.post.comments.push(comment);
-		req.post.save(function(err, post) {
-			if(err){ return next(err); }
-
-			res.json(comment);
-		});
+/*POST comments's replies*/
+router.post('/comments/:comment/replies', auth, function(req, res, next) {
+	var comment = new Comment(req.body);
+	comment.post = req.comment.post;
+	comment.date = new Date();
+	comment.author = req.payload.username;
+	var path = "";
+	if(req.comment.path){
+		path+=req.comment.path;
+	} else {
+		path = ",";
+	}
+	comment.parent = req.comment._id;
+	comment.path = path+req.comment._id+",";
+	comment.save(function(err, comment){
+		if(err){ return next(err); }
+		res.json(comment);
 	});
 });
 

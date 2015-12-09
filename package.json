@@ -14,6 +14,7 @@
     "express-jwt": "^3.3.0",
     "jsonwebtoken": "^5.4.1",
     "mongoose": "^4.2.6",
+    "mongoose-populate-virtuals": "^1.0.3",
     "morgan": "~1.6.1",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
