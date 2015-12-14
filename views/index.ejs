@@ -182,8 +182,8 @@
 			<button type="submit" ng-show="isLoggedIn() && showReply" class="btn btn-primary">reply</button>
 		</form>
 
-		 <ul ng-show="comment.comments"  class="children">
-				<li ng-repeat="comment in comment.comments | orderBy:'-upvotes'" ng-include="'commentsRender'"></li>
+		 <ul ng-show="comment.children"  class="children">
+				<li ng-repeat="comment in comment.children | orderBy:'-upvotes'" ng-include="'commentsRender'"></li>
 		 </ul>
 </div>
  </script>
