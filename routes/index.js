@@ -114,7 +114,7 @@ router.get('/posts/:post', function(req, res) {
 		doc.getArrayTree(function(err,tree){
 			if (err) { return next(err); }
 			console.log(tree)
-			post.comments = tree.children;
+			post.comments = tree;
 			res.json(post);
 		});
 	});

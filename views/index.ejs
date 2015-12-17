@@ -58,6 +58,29 @@
 </div>
 <script type="text/ng-template" id="/home.html">
 
+<button ng-show="isLoggedIn() && !showPost" ng-click="showPost=true" class="pager">Add post</button> 
+
+		<form ng-submit="addPost()"
+			ng-show="showPost"
+			style="margin-top:30px;">
+			<h3>Add a new post</h3>
+
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Title" ng-model="title"></input>
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Link" ng-model="link"></input>
+			</div>
+			<div class="form-group">
+				<textarea class="form-control" placeholder="Body" ng-model="body"></textarea>
+			</div>
+			<button type="submit" class="btn btn-primary">Post</button>
+		</form>
+
+		<div ng-hide="isLoggedIn()">
+			<p>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</p>
+		</div>
+
 <div ng-repeat="post in posts | orderBy:'-upvotes'" class="blog-post">
 			<span class="glyphicon glyphicon-thumbs-up"
 				ng-click="incrementUpvotes(post)"></span>
@@ -87,34 +110,25 @@
 
 </div>
 
-		<button ng-show="isLoggedIn() && !showPost" ng-click="showPost=true" class="pager">Add post</button> 
-
-		<form ng-submit="addPost()"
-			ng-show="showPost"
-			style="margin-top:30px;">
-			<h3>Add a new post</h3>
-
-			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Title" ng-model="title"></input>
-			</div>
-			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Link" ng-model="link"></input>
-			</div>
-			<div class="form-group">
-				<textarea class="form-control" placeholder="Body" ng-model="body"></textarea>
-			</div>
-			<button type="submit" class="btn btn-primary">Post</button>
-		</form>
-
-		<div ng-hide="isLoggedIn()">
-			<p>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</p>
-		</div>
-
 </script>
 
 <script type="text/ng-template" id="/posts.html">
+
+<button ng-show="isLoggedIn() && !showComment" ng-click="showComment=true" class="pager">Add comment</button> 
+
+<form ng-submit="addComment()" ng-show="showComment" style="margin-top:30px;">
+		<h3>Add a new comment</h3>
+
+		<div class="form-group">
+			<textarea class="form-control" placeholder="Comment" ng-model="body"></textarea>
+		</div>
+		<button type="submit" class="btn btn-primary">Post</button>
+	</form>
+
+<div ng-hide="isLoggedIn()">
+	<p>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can comment.</p>
+</div>
 <div class="page-header">
-			<br>
 			<h2 class="blog-post-title">
 				<a ng-show="post.link" href="{{post.link}}">
 					{{post.title}}
@@ -133,58 +147,57 @@
 			<p ng-show="post.body">{{post.body}}</p>
 
 	</div>
+<div class="row">
+		<div class="post-comments" ng-repeat="comment in post.comments[0].children | orderBy:'-upvotes'" ng-include="'commentsRender'"/>
+	</div>
 
-	<ul>
-		<li ng-repeat="comment in post.comments | orderBy:'-upvotes'" ng-include="'commentsRender'"></li>
-	</ul>
-
-<button ng-show="isLoggedIn() && !showComment" ng-click="showComment=true" class="pager">Add comment</button> 
-
-<form ng-submit="addComment()" ng-show="showComment" style="margin-top:30px;">
-		<h3>Add a new comment</h3>
-
-		<div class="form-group">
-			<textarea class="form-control" placeholder="Comment" ng-model="body"></textarea>
-		</div>
-		<button type="submit" class="btn btn-primary">Post</button>
-	</form>
-
-<div ng-hide="isLoggedIn()">
-	<p>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can comment.</p>
-</div>
+</comments>
 
 </script>
 
- <script type="text/ng-template" id="commentsRender">
-<div class="blog-comment">
-		<br>
-		<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(comment)"></span>
-		<span class="glyphicon glyphicon-thumbs-down" ng-click="decrementUpvotes(comment)"></span>
-		{{comment.upvotes}} 
+<script type="text/ng-template" id="commentsRender">
+<div class="media">
+	<div class="media-heading">
+		<span class="label label-info">{{comment.upvotes}}</span> 
 
-		<p>
-			{{comment.body}}
-		</p>
+		Submitted on {{post.date | date:'MM/dd/yyyy @ h:mma'}}
+		<span ng-show="post.author">
+			by <a>{{post.author}}</a>		
+		</span>    
+	</div>
 
-		<p class="blog-post-meta">
-				Submitted on {{post.date | date:'MM/dd/yyyy @ h:mma'}}
-				<span ng-show="post.author">
-					by <a>{{post.author}}</a>
-				</span>    
-		</p>
+	<div class="panel-collapse collapse in">
 
-		<button  ng-click="showReply=true">reply</button>
 
-		<form ng-submit="addComment(comment)" ng-show="isLoggedIn() && showReply" style="margin-top:30px;">
-			<div class="form-group">
-				<textarea class="form-control" placeHolder="Reply" ng-model="reply">Reply</textarea>
-			</div>
-			<button type="submit" ng-show="isLoggedIn() && showReply" class="btn btn-primary">reply</button>
-		</form>
+		  <div class="media-left">
+            <div class="vote-wrap">
+              <div class="save-post">
+									<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(comment)"></span>
+									<span class="glyphicon glyphicon-thumbs-down" ng-click="decrementUpvotes(comment)"></span>
+              </div>
+            </div>
+      </div>
+	
+		<div class="media-body">
 
-		 <ul ng-show="comment.children"  class="children">
-				<li ng-repeat="comment in comment.children | orderBy:'-upvotes'" ng-include="'commentsRender'"></li>
-		 </ul>
+			<p>{{comment.body}}</p>
+
+		 	<div class="comment-meta">
+					<button  ng-show="isLoggedIn()" ng-click="comment.reply=true" >reply</button>
+					<div ng-show="comment.reply">
+						<form ng-submit="addComment(comment)">
+							<div class="form-group">
+								<label for="comment">Your Comment</label>
+								<textarea name="comment" class="form-control" rows="3" placeHolder="Reply" ng-model="reply"></textarea>
+							</div>
+							<button type="submit" class="btn btn-default">Send</button>
+						</form>
+					</div>
+				</div>	
+
+			<div class="post-comments" ng-repeat="comment in comment.children | orderBy:'-upvotes'" ng-include="'commentsRender'"/>
+		</div>
+	</div>
 </div>
  </script>
 

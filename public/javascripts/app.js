@@ -4,17 +4,17 @@ var app = angular.module('flapperNews', ['ui.router']);
 app.config([
 		'$stateProvider',
 		'$urlRouterProvider',
-		function($stateProvider, $urlRouterProvider) {
+		function($stateProvider, $urlRouterProvider){
 
 			$stateProvider.state('home', {
 				url: '/home',
-			templateUrl: '/home.html',
-			controller: 'MainCtrl',
-			resolve: {
-				postPromise: ['posts', function(posts){
-					return posts.getAll();
-				}]
-			}
+				templateUrl: '/home.html',
+				controller: 'MainCtrl',
+				resolve: {
+					postPromise: ['posts', function(posts){
+						return posts.getAll();
+					}]
+				}
 			});
 			$stateProvider.state('posts', {
 				url: '/posts/{id}',
@@ -238,6 +238,7 @@ app.controller('PostsCtrl', [
 		'post',
 		'auth',
 		function($scope, posts, post, auth){
+
 			$scope.post = post;
 			$scope.isLoggedIn = auth.isLoggedIn;
 
@@ -278,6 +279,7 @@ app.controller('PostsCtrl', [
 
 ]);
 
+
 app.controller('NavCtrl', [
 		'$scope',
 		'auth',
@@ -286,3 +288,5 @@ app.controller('NavCtrl', [
 			$scope.currentUser = auth.currentUser;
 			$scope.logOut = auth.logOut;
 		}]);
+
+
