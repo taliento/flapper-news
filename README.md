@@ -29,3 +29,6 @@ Requires nodejs, and mongodb installed and running.
 * Persistent
 -- saves to: mongodb://localhost/news
 
+> features
+
+- threaded/nested comments like reddit
