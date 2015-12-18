@@ -24,11 +24,11 @@ N - NodeJs server technology <br>
 Requires nodejs, and mongodb installed and running.
 
 
-> node app
+# node app
 
 * Persistent
 -- saves to: mongodb://localhost/news
 
-> features
+# features
 
 - threaded/nested comments like reddit
