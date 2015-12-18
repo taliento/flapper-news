@@ -249,10 +249,10 @@ app.controller('PostsCtrl', [
 						body: this.reply,
 						author: 'user'
 					}).success(function(comment){
-						if(!_parent.comments){
-							_parent.comments = [];
+						if(!_parent.children){
+							_parent.children = [];
 						}
-						_parent.comments.push(comment);	
+						_parent.children.push(comment);	
 					});	
 					this.reply = '';
 				}else {
