@@ -149,8 +149,8 @@ app.factory('posts', ['$http', 'auth',function($http, auth){
 		});
 	};
 
-	o.addCommentReply = function(id, comment){
-		return $http.post('/comments/' + id + '/replies', comment, {
+	o.addCommentReply = function(postId, id, comment){
+		return $http.post('/posts/'+postId+'/comments/' + id + '/replies', comment, {
 			headers: {Authorization: 'Bearer '+auth.getToken()}
 		});
 
@@ -245,7 +245,7 @@ app.controller('PostsCtrl', [
 			$scope.addComment = function(_parent){
 				if($scope.body === '' &&  this.reply === '') { return; }
 				if(_parent) {
-					posts.addCommentReply(_parent._id, {
+					posts.addCommentReply(post._id,_parent._id, {
 						body: this.reply,
 						author: 'user'
 					}).success(function(comment){
@@ -261,7 +261,9 @@ app.controller('PostsCtrl', [
 						body: $scope.body,
 						author: 'user'
 					}).success(function(comment) {
-						$scope.post.comments.push(comment);
+						if(!$scope.post.comments[0].children)
+							$scope.post.comments[0].children = [];
+						$scope.post.comments[0].children.push(comment);
 					});
 					$scope.body = '';
 				}	

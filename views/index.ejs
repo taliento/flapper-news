@@ -84,9 +84,9 @@
 <div ng-repeat="post in posts | orderBy:'-upvotes'" class="blog-post">
 			<span class="glyphicon glyphicon-thumbs-up"
 				ng-click="incrementUpvotes(post)"></span>
+			{{post.upvotes}}
 			<span class="glyphicon glyphicon-thumbs-down"
 				ng-click="decrementUpvotes(post)"></span>
-			{{post.upvotes}}
 
 			<h2 class="blog-post-title">
 				<a ng-show="post.link" href="{{post.link}}">
@@ -105,7 +105,7 @@
 			</p>
 			<p ng-show="post.body">{{post.body}}</p>
 			<span>
-				{{post.comments.length}}	<a href="#/posts/{{post._id}}">comments</a>
+				{{post.commentsLength}}	<a href="#/posts/{{post._id}}">comments</a>
 			</span>
 
 </div>
@@ -158,7 +158,6 @@
 <script type="text/ng-template" id="commentsRender">
 <div class="media">
 	<div class="media-heading">
-		<span class="label label-info">{{comment.upvotes}}</span> 
 
 		Submitted on {{comment.date | date:'MM/dd/yyyy @ h:mma'}}
 		<span ng-show="post.author">
@@ -173,6 +172,7 @@
             <div class="vote-wrap">
               <div class="save-post">
 									<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(comment)"></span>
+									<span class="label label-info">{{comment.upvotes}}</span> 
 									<span class="glyphicon glyphicon-thumbs-down" ng-click="decrementUpvotes(comment)"></span>
               </div>
             </div>

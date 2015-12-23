@@ -8,7 +8,8 @@ var PostSchema = new mongoose.Schema({
 		link: String,
 		upvotes: {type: Number, default: 0},
 		users:[{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-		comments:[]
+		comments:[],
+		commentsLength: {type: Number, default: 0}
 });
 
 PostSchema.methods.upvote = function(cb, user) {
@@ -35,6 +36,11 @@ PostSchema.methods.downvote = function(cb, user) {
 		this.users.push(user);
 	  this.upvotes -= 1;
 		this.save(cb);
+};
+
+PostSchema.methods.incrementComments = function(cb) {
+	this.commentsLength += 1;
+	this.save(cb);
 };
 
 mongoose.model('Post', PostSchema);

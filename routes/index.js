@@ -147,22 +147,28 @@ router.post('/posts/:post/comments', auth, function(req, res, next) {
 		comment.parentId = rootComment._id;
 		comment.save(function(err,doc){
 			if(err){ return next(err); }
-			res.json(doc);
+			req.post.incrementComments(function(err, p){
+				if(err){ return next(err); }
+				res.json(doc);
+			});
 		});
 	});
 });
 
 
 /*POST comments's replies*/
-router.post('/comments/:comment/replies', auth, function(req, res, next) {
+router.post('/posts/:post/comments/:comment/replies', auth, function(req, res, next) {
 	var comment = new Comment(req.body);
 	comment.date = new Date();
 	comment.author = req.payload.username;
 
 	Comment.AppendChild(req.comment._id, comment, function(err, doc){
 		if(err){ return next(err); }
-		res.json(doc);
 
+			req.post.incrementComments(function(err, p){
+				if(err){ return next(err); }
+				res.json(doc);
+			});
 	});
 
 });
