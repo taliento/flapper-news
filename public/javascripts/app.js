@@ -253,6 +253,7 @@ app.controller('PostsCtrl', [
 							_parent.children = [];
 						}
 						_parent.children.push(comment);	
+						_parent.reply = false;
 					});	
 					this.reply = '';
 				}else {
