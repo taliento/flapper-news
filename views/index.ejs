@@ -112,7 +112,7 @@
 
 <script type="text/ng-template" id="/posts.html">
 
-<button ng-show="isLoggedIn() && !showComment" ng-click="showComment=true" class="pager">Add comment</button> 
+<button ng-show="isLoggedIn()" ng-click="showComment=true" type="button" class="btn btn-primary">Add comment</button> 
 
 <form ng-submit="addComment()" ng-show="showComment" style="margin-top:30px;">
 		<h3>Add a new comment</h3>
