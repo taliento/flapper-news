@@ -25,6 +25,7 @@
 			<a class="blog-nav-item" href="#">New hires</a>
 			<a class="blog-nav-item" href="#">About</a>
 
+			<b ng-hide="isLoggedIn()" class="blog-nav-item inactive pull-right">Log in or sign up.</b>
 		</nav>
 	</div>
 </div>
@@ -58,7 +59,7 @@
 </div>
 <script type="text/ng-template" id="/home.html">
 
-<button ng-show="isLoggedIn() && !showPost" ng-click="showPost=true" class="pager">Add post</button> 
+<button ng-show="isLoggedIn() && !showPost" ng-click="showPost=true" type="button" class="btn btn-primary" style="margin-bottom:30px">Add post</button> 
 
 		<form ng-submit="addPost()"
 			ng-show="showPost"
@@ -77,9 +78,6 @@
 			<button type="submit" class="btn btn-primary">Post</button>
 		</form>
 
-		<div ng-hide="isLoggedIn()">
-			<p>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</p>
-		</div>
 
 <div ng-repeat="post in posts | orderBy:'-upvotes'" class="blog-post">
 			<span class="glyphicon glyphicon-thumbs-up"
@@ -125,9 +123,6 @@
 		<button type="submit" class="btn btn-primary">Post</button>
 	</form>
 
-<div ng-hide="isLoggedIn()">
-	<p>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can comment.</p>
-</div>
 <div class="page-header">
 			<h2 class="blog-post-title">
 				<a ng-show="post.link" href="{{post.link}}">
