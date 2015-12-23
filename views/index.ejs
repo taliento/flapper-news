@@ -5,7 +5,7 @@
 
 <!-- CSS -->
 <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="stylesheets/blog.css">
+<link rel="stylesheet" href="stylesheets/dave/blog.css">
 
 <!-- JS -->
 <script src="libs/angular/angular.min.js"></script>
@@ -165,9 +165,6 @@
 		</span>    
 	</div>
 
-	<div class="panel-collapse collapse in">
-
-
 		  <div class="media-left">
             <div class="vote-wrap">
               <div class="save-post">
@@ -183,21 +180,20 @@
 			<p>{{comment.body}}</p>
 
 		 	<div class="comment-meta">
-					<button  ng-show="isLoggedIn()" ng-click="comment.reply=true" >reply</button>
+					<button  ng-show="isLoggedIn()" ng-click="comment.reply=true" class="btn btn-link" type="button">reply</button>
 					<div ng-show="comment.reply">
 						<form ng-submit="addComment(comment)">
 							<div class="form-group">
 								<label for="comment">Your Comment</label>
 								<textarea name="comment" class="form-control" rows="3" placeHolder="Reply" ng-model="reply"></textarea>
 							</div>
-							<button type="submit" class="btn btn-default">Send</button>
+							<button type="submit" class="btn btn-primary">Send</button>
 						</form>
 					</div>
 				</div>	
 
 			<div class="post-comments" ng-repeat="comment in comment.children | orderBy:'-upvotes'" ng-include="'commentsRender'"/>
 		</div>
-	</div>
 </div>
  </script>
 

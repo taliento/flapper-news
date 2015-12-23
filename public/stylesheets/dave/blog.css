@@ -169,8 +169,8 @@ h6, .h6 {
 }
 
 .post-comments .media {
-	border-left: 1px dotted #000;
-	border-bottom: 1px dotted #000;
+	/*border-left: 1px dotted #000;
+	border-bottom: 1px dotted #000;*/
 	margin-bottom: 5px;
 	padding-left: 10px;
 }
