@@ -25,19 +25,15 @@
 			<a class="blog-nav-item" href="#">New hires</a>
 			<a class="blog-nav-item" href="#">About</a>
 
-			<b ng-hide="isLoggedIn()" class="blog-nav-item inactive pull-right">Log in or sign up.</b>
+			<a class="blog-nav-item pull-right" ng-show="isLoggedIn()">{{ currentUser() }}</a>
+			<a class="blog-nav-item pull-right" ng-show="isLoggedIn()" href="" ng-click="logOut()">Log Out</a>
+			<a class="blog-nav-item pull-right" ng-hide="isLoggedIn()" href="/#/login">Log In</a>
+			<a class="blog-nav-item pull-right" ng-hide="isLoggedIn()" href="/#/register">Register</a>
+
 		</nav>
 	</div>
 </div>
 
-<nav class="navbar navbar-default pull-right" ng-controller="NavCtrl">
-	<ul class="nav navbar-nav">
-		<li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
-		<li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
-		<li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
-		<li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
-	</ul>
-</nav>
 <!--fine navbar-->
 
 <body ng-app="flapperNews" ng-controller="MainCtrl">
@@ -75,7 +71,7 @@
 			<div class="form-group">
 				<textarea class="form-control" placeholder="Body" ng-model="body"></textarea>
 			</div>
-			<button type="submit" class="btn btn-primary">Post</button>
+			<button type="submit" class="btn btn-success">Post</button>
 		</form>
 
 
@@ -120,7 +116,7 @@
 		<div class="form-group">
 			<textarea class="form-control" placeholder="Comment" ng-model="body"></textarea>
 		</div>
-		<button type="submit" class="btn btn-primary">Post</button>
+		<button type="submit" class="btn btn-success">Post</button>
 	</form>
 
 <div class="page-header">
@@ -182,7 +178,7 @@
 								<label for="comment">Your Comment</label>
 								<textarea name="comment" class="form-control" rows="3" placeHolder="Reply" ng-model="reply"></textarea>
 							</div>
-							<button type="submit" class="btn btn-primary">Send</button>
+							<button type="submit" class="btn btn-success">Send</button>
 						</form>
 					</div>
 				</div>	
@@ -214,7 +210,7 @@
 			placeholder="Password"
 			ng-model="user.password"></input>
 		</div>
-		<button type="submit" class="btn btn-primary">Register</button>
+		<button type="submit" class="btn btn-success">Register</button>
 	</form>
 </script>
 
@@ -240,7 +236,7 @@
 			placeholder="Password"
 			ng-model="user.password"></input>
 		</div>
-		<button type="submit" class="btn btn-primary">Log In</button>
+		<button type="submit" class="btn btn-success">Log In</button>
 	</form>
 </script>
 
