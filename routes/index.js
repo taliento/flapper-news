@@ -142,6 +142,7 @@ router.put('/posts/:post/downvote', auth, function(req, res, next) {
 router.post('/posts/:post/comments', auth, function(req, res, next) {
 	var comment = new Comment(req.body);
 	comment.author = req.payload.username;
+	comment.date = new Date();
 	Comment.findOne({post:req.post}).exec(function(err,rootComment){
 		if(err){ return next(err); }
 		comment.parentId = rootComment._id;
