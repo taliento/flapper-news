@@ -32,3 +32,4 @@ Requires nodejs, and mongodb installed and running.
 # features
 
 - threaded/nested comments like reddit
+- google signin
