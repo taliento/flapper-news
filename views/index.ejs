@@ -1,6 +1,9 @@
 <html>
 <head>
 <title>Davide's Blog</title>
+<meta name="google-signin-scope" content="profile email">
+<meta name="google-signin-client_id" content="227222761792-fl1h4h3ga9tvabn6tdntn332auedn4gm.apps.googleusercontent.com">
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 
 
 <!-- CSS -->
@@ -11,7 +14,6 @@
 <script src="libs/angular/angular.min.js"></script>
 <script src="libs/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="javascripts/app.js"></script>
-
 
 </head>
 
@@ -29,7 +31,9 @@
 			<a class="blog-nav-item pull-right" ng-show="isLoggedIn()" href="" ng-click="logOut()">Log Out</a>
 			<a class="blog-nav-item pull-right" ng-hide="isLoggedIn()" href="/#/login">Log In</a>
 			<a class="blog-nav-item pull-right" ng-hide="isLoggedIn()" href="/#/register">Register</a>
-
+			<div ng-controller="AuthCtrl">
+				<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+			</div>
 		</nav>
 	</div>
 </div>

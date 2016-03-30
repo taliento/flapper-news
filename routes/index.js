@@ -37,19 +37,44 @@ router.post('/register', function(req, res, next){
 });
 
 router.post('/login', function(req, res, next){
-	if(!req.body.username || !req.body.password){
-		return res.status(400).json({message: 'Please fill out all fields'});
-	}
+	if(req.body.idToken){
 
-	passport.authenticate('local', function(err, user, info){
-		if(err){ return next(err); }
+		User.findOne({ username: req.body.username }, function (err, user) {
+			if (err) { return done(err); }
+			if (!user) {
+				user = new User();
+				user.username = req.body.username;
+				user.idToken = req.body.idToken;
+				user.setPassword(req.body.username);
+				user.save(function (err){
+					if(err){ return next(err); }
 
-		if(user){
-			return res.json({token: user.generateJWT()});
-		} else {
-			return res.status(401).json(info);
+					return res.json({token: user.generateJWT()})
+				});
+
+			}else{
+				return res.json({token: user.generateJWT()});
+			}
+
+		});
+
+	} else {
+
+		if(!req.body.username || !req.body.password){
+			return res.status(400).json({message: 'Please fill out all fields'});
 		}
-	})(req, res, next);
+
+		passport.authenticate('local', function(err, user, info){
+			if(err){ return next(err); }
+
+			if(user){
+				return res.json({token: user.generateJWT()});
+			} else {
+				return res.status(401).json(info);
+			}
+		})(req, res, next);
+
+	}
 });
 
 /*preload a comment  by id */
@@ -166,10 +191,10 @@ router.post('/posts/:post/comments/:comment/replies', auth, function(req, res, n
 	Comment.AppendChild(req.comment._id, comment, function(err, doc){
 		if(err){ return next(err); }
 
-			req.post.incrementComments(function(err, p){
-				if(err){ return next(err); }
-				res.json(doc);
-			});
+		req.post.incrementComments(function(err, p){
+			if(err){ return next(err); }
+			res.json(doc);
+		});
 	});
 
 });

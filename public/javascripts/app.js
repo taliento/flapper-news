@@ -8,13 +8,13 @@ app.config([
 
 			$stateProvider.state('home', {
 				url: '/home',
-				templateUrl: '/home.html',
-				controller: 'MainCtrl',
-				resolve: {
-					postPromise: ['posts', function(posts){
-						return posts.getAll();
-					}]
-				}
+			templateUrl: '/home.html',
+			controller: 'MainCtrl',
+			resolve: {
+				postPromise: ['posts', function(posts){
+					return posts.getAll();
+				}]
+			}
 			});
 			$stateProvider.state('posts', {
 				url: '/posts/{id}',
@@ -95,6 +95,7 @@ app.factory('auth', ['$http', '$window', function($http, $window){
 			auth.saveToken(data.token);
 		});
 	};
+
 
 	auth.logOut = function(){
 		$window.localStorage.removeItem('flapper-news-token');
@@ -198,6 +199,36 @@ app.controller('AuthCtrl', [
 					$state.go('home');
 				});
 			};
+
+			function onSignIn(googleUser) {
+				var profile = googleUser.getBasicProfile();
+				console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+				console.log('Full Name: ' + profile.getName());
+				console.log('Given Name: ' + profile.getGivenName());
+				console.log('Family Name: ' + profile.getFamilyName());
+				console.log("Image URL: " + profile.getImageUrl());
+				console.log("Email: " + profile.getEmail());
+
+				// The ID token you need to pass to your backend:
+				var id_token = googleUser.getAuthResponse().id_token;
+				console.log("ID Token: " + id_token);
+
+				var user = {};
+				user.username = profile.getName();
+				user.idToken = id_token;
+
+				auth.logIn(user).error(function(error){
+					$scope.error = error;
+				}).then(function(){
+					$state.go('home');
+				});
+
+
+			}
+
+
+			window.onSignIn = onSignIn;
+
 		}]);
 
 app.controller('MainCtrl', [
@@ -262,8 +293,8 @@ app.controller('PostsCtrl', [
 						author: 'user'
 					}).success(function(comment) {
 						if(!$scope.post.comments[0].children)
-							$scope.post.comments[0].children = [];
-						$scope.post.comments[0].children.push(comment);
+						$scope.post.comments[0].children = [];
+					$scope.post.comments[0].children.push(comment);
 					});
 					$scope.body = '';
 				}	
