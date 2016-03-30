@@ -31,7 +31,7 @@
 			<a class="blog-nav-item pull-right" ng-show="isLoggedIn()" href="" ng-click="logOut()">Log Out</a>
 			<a class="blog-nav-item pull-right" ng-hide="isLoggedIn()" href="/#/login">Log In</a>
 			<a class="blog-nav-item pull-right" ng-hide="isLoggedIn()" href="/#/register">Register</a>
-			<div ng-controller="AuthCtrl">
+			<div class="pull-right" ng-controller="AuthCtrl">
 				<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
 			</div>
 		</nav>
