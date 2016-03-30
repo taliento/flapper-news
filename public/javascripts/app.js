@@ -214,7 +214,7 @@ app.controller('AuthCtrl', [
 				console.log("ID Token: " + id_token);
 
 				var user = {};
-				user.username = profile.getName();
+				user.username = profile.getEmail();
 				user.idToken = id_token;
 
 				auth.logIn(user).error(function(error){
